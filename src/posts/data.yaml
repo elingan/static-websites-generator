@@ -1,0 +1,16 @@
+posts:
+  -
+    name: Post 1
+    slug: post-1
+    date: 5 de Septiembre de 2016
+    author: Eduardo L.
+  -
+    name: Post 2
+    slug: post-2
+    date: 5 de Septiembre de 2016
+    author: Eduardo L.
+  -
+    name: Post 3
+    slug: post-3
+    date: 5 de Septiembre de 2016
+    author: Eduardo L.

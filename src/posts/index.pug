@@ -1,0 +1,7 @@
+extends ../_layout
+
+block content
+  each post in posts
+    - var page = post.slug + '.html'
+    a(href=page)
+      h2 #{post.name}
