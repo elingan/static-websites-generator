@@ -1,6 +1,6 @@
 # SUMAQ Static Websites Generator
 
-This is a simple static websites generator with Gulp, Pug, Stylus, BrowserSync, etc. for publish to S3.
+This is a simple static websites generator with Gulp, Pug, Stylus, Yaml, BrowserSync, etc. for publish to S3.
 
 ## Important links
 

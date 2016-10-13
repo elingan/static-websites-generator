@@ -1,6 +1,6 @@
 ---
 title: Post 1
-layout: src/posts/_posts.pug
+layout: _posts.pug
 ---
 
 # Post 1

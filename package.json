@@ -29,6 +29,7 @@
     "gulp-layout": "0.0.4",
     "gulp-load-plugins": "^1.2.0",
     "gulp-markdown": "^1.2.0",
+    "gulp-merge-json": "^0.6.0",
     "gulp-pug": "^3.0.4",
     "gulp-rename": "^1.2.2",
     "gulp-sequence": "~0.4.5",

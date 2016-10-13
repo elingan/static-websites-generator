@@ -1,5 +1,8 @@
-extends ./_layout
+extends _layout
 
 block content
-  h1 #{content}
-  a(href="posts") Posts
+  h1= home.title
+  a(href="/about")
+    h3= menu.about
+  a(href="/posts")
+    h3= menu.posts

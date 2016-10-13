@@ -3,6 +3,10 @@ var path = require('path');
 var fs = require('fs');
 var browserSync = require('browser-sync').create();
 
+
+/////////////////// CONFIGURATION /////////////////////
+
+
 // Load plugins
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'del']
@@ -37,6 +41,9 @@ var conf = {
 };
 
 
+/////////////////// TASKS /////////////////////
+
+
 /**
  * Delete dist and tmp folder
  */
@@ -56,19 +63,12 @@ gulp.task('pug', ['yaml'], function() {
       path.join(conf.paths.src, '/**/*.pug'),
       path.join('!' + conf.paths.src, '/**/_*.pug')
     ])
-    .pipe($.foreach(function(stream, file) {
-      var dirname = path.dirname(file.path).replace(conf.paths.src, conf.paths.tmp)
-      return stream
-        .pipe($.debug({
-          title: 'foreach-pug'
-        }))
-        .pipe($.data(function() {
-          return JSON.parse(fs.readFileSync(path.join(dirname, '/data.json')));
-        })).on('error', conf.errorHandler('pug:jsonParse'))
-        .pipe($.pug({
-          pretty: true
-        })).on('error', conf.errorHandler('pug:pug'))
-    }))
+    .pipe($.data(function() {
+      return JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')));
+    })).on('error', conf.errorHandler('pug:jsonParse'))
+    .pipe($.pug({
+      pretty: true
+    })).on('error', conf.errorHandler('pug:pug'))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
     .pipe(browserSync.stream());
 });
@@ -91,10 +91,9 @@ gulp.task('stylus', function() {
  */
 gulp.task('yaml', function() {
   return gulp.src(path.join(conf.paths.src, '/**/data.yaml'))
-    .pipe($.debug({
-      title: 'yaml'
-    }))
+    .pipe($.debug({title: 'yaml'}))
     .pipe($.yaml())
+    .pipe($.mergeJson('data.json')).on('error', conf.errorHandler('mergeJson'))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
     .pipe(browserSync.stream());
 });
@@ -191,24 +190,29 @@ gulp.task('config:copy', function() {
 /**
  * Compile Posts
  */
-gulp.task('posts', function() {
+gulp.task('posts', ['yaml'], function() {
   return gulp.src('./src/**/*.md')
     .pipe($.frontMatter())
     .pipe($.markdown())
+    // QUITAR frontMatter
     .pipe($.layout(function(file) {
-      return file.frontMatter;
+      var data = JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')));
+      data.layout = path.join(conf.paths.src, '/', path.dirname(file.relative), file.frontMatter.layout);
+      return data;
     })).on('error', conf.errorHandler('posts:layout'))
     .pipe($.debug({
       title: 'post'
     }))
-    .pipe(gulp.dest(path.join(conf.paths.tmp, '/')));
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
+    .pipe(browserSync.stream());
 });
 
 
 /////////////////// MAIN TASKS /////////////////////
 
+
 /**
- * Serve the Harp Site
+ * Serve the Site
  * Watch styles, scripts and images
  */
 gulp.task('serve', ['clean', 'copy', 'pug', 'stylus', 'posts'], function() {
@@ -246,7 +250,7 @@ gulp.task('build', $.sequence('clean', ['copy', 'pug', 'stylus', 'posts'], 'imag
 /**
  * Push build to s3 repository
  */
-gulp.task('publish:s3', function() {
+gulp.task('publish', ['build'], function() {
 
   var credentials = JSON.parse(fs.readFileSync('./credentials.json', 'utf8'));
   var publisher = $.awspublish.create(credentials);
@@ -257,15 +261,6 @@ gulp.task('publish:s3', function() {
     .pipe(publisher.sync())
     .pipe($.awspublish.reporter())
 });
-
-// gulp.task('deploy', ['build'], function(cb) {
-//   var exec = require('child_process').exec;
-//   exec('./deploy.sh -c deploy.env', function(err, stdout, stderr) {
-//     console.log(stdout);
-//     console.log(stderr);
-//     cb(err);
-//   });
-// });
 
 /**
  * Default task, running just `gulp` will compile the sass,

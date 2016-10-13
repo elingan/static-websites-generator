@@ -4,10 +4,9 @@ html(lang="en")
     // metadata
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
-    title
-      | #{title}
-    meta(name="description", content="#{description}")
-    meta(name="keywords" content="#{keywords}")
+    title= meta.title
+    meta(name="description", content=meta.description)
+    meta(name="keywords" content=meta.keywords)
     meta(name="viewport", content="width=device-width, initial-scale=1")
 
     // Favicon
@@ -25,27 +24,8 @@ html(lang="en")
 
   body
     <!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
-    //header
-    //  .container
-    //    .row
-    //      .twelve.columns
-    //        h6 Home | About | Contact
-    //
-    //- if current.path[0] == "posts" && current.source !== 'index'
-    //-   != partial(current.path[0] + '/_nest')
-    //- else
-    // Site
+
     block content
-
-    //- footer#footer
-    //-   hr
-    //-   .container.text-center
-    //-     .row
-    //-       .six.columns
-    //-         p Static Website Generator 2016
-    //-       .six.columns
-    //-         //small path: #{current.path[0]}, source: #{current.source}
-
 
 
     // Scripts
