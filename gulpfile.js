@@ -152,6 +152,9 @@ gulp.task('dist', function() {
     .pipe($.jsbeautifier({
       indent_size: 2
     }))
+    .pipe(htmlFilter)
+    .pipe($.useref({noAssets:true})).on('error', conf.errorHandler('useref-html'))
+    .pipe(htmlFilter.restore)
     .pipe(htmlIndexFilter)
     .pipe($.useref()).on('error', conf.errorHandler('useref-index'))
     .pipe($.debug({
@@ -179,8 +182,6 @@ gulp.task('config:copy', function() {
   files.forEach(function(file) {
     src.push(path.join(conf.paths.config, '/files/' + file));
   });
-  //conf.paths.srv, '/_server/*')
-  console.log(src);
   return gulp.src(src)
     //.pipe($.flatten())
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
@@ -250,15 +251,18 @@ gulp.task('build', $.sequence('clean', ['copy', 'pug', 'stylus', 'posts'], 'imag
 /**
  * Push build to s3 repository
  */
-gulp.task('publish', ['build'], function() {
+gulp.task('publish', function() {
 
   var credentials = JSON.parse(fs.readFileSync('./credentials.json', 'utf8'));
-  var publisher = $.awspublish.create(credentials);
+  var publisher = $.awspublish.create(credentials, {
+    cacheFileName:'.publish.cache'
+  });
 
   // create a new publisher
   return gulp.src(path.join(conf.paths.dist, '/**/*'))
     .pipe(publisher.publish())
-    .pipe(publisher.sync())
+    //.pipe(publisher.sync())
+    .pipe(publisher.cache())
     .pipe($.awspublish.reporter())
 });
 
