@@ -6,12 +6,10 @@
     "type": "git",
     "url": "https://github.com/elingan/static-websites-generator"
   },
-  "dependencies": {
+  "devDependencies": {
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.5.0",
-    "imagemin-jpegoptim": "^5.0.0"
-  },
-  "devDependencies": {
+    "imagemin-jpegoptim": "^5.0.0",
     "browser-sync": "~2.14.0",
     "del": "~2.2.0",
     "gulp": "^3.9.1",
