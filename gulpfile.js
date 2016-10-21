@@ -124,14 +124,17 @@ gulp.task('copy', function() {
  */
 gulp.task('images', function() {
   return gulp.src(path.join(conf.paths.tmp, '/**/*.{jpg,jpeg,gif,svg,png,ico}'))
-    .pipe($.debug({
-      title: 'images'
-    }))
-    .pipe($.imagemin({
-      svgoPlugins: [{
-        convertPathData: false
-      }]
-    }))
+  .pipe($.imagemin([
+    imageminGifsicle(),
+    imageminJpegoptim({
+      progressive: true,
+      max:50
+    }),
+    imageminOptipng(),
+    imageminSvgo()
+  ], {
+    verbose: true,
+  })).on('error', conf.errorHandler('imagemin'))
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
