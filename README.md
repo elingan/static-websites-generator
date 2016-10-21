@@ -17,6 +17,12 @@ This is a simple static websites generator with Gulp, Pug, Stylus, Yaml, Browser
     gulp deploy         // deploy dist folder in git server, before required config values (in deploy.env) and build site
 ```  
 
+## Tips
+- Cambiar ruta de /fonts si es necesario
+-
+
+
+
 ## Folders tree ##
 
 ```

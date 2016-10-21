@@ -56,6 +56,15 @@ gulp.task('clean', function() {
 
 
 /**
+ * Copy all fonts
+ */
+gulp.task('fonts', function() {
+  return gulp.src(path.join(conf.paths.tmp, '/assets/fonts/*.{svg,eot,ttf,woff,woff2,otf}'))
+    .pipe($.debug({title: 'fonts'}))
+    .pipe(gulp.dest(path.join(conf.paths.dist, '/assets/fonts')));
+});
+
+/**
  * Compile the Pug files
  */
 gulp.task('pug', ['yaml'], function() {
@@ -102,7 +111,7 @@ gulp.task('yaml', function() {
  * Copy css, js and image files to .tmp
  */
 gulp.task('copy', function() {
-  return gulp.src(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico}'))
+  return gulp.src(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico,eot,ttf,woff,woff2,otf}'))
     .pipe($.debug({
       title: 'copy'
     }))
@@ -143,6 +152,10 @@ gulp.task('dist', function() {
   var htmlIndexFilter = $.filter('index.html', {
     restore: true
   });
+  var htmlMinFilter = $.filter('**/*.html', {
+    restore: true
+  });
+
 
   var useref = $.useref({
     //searchPath: path.join(conf.paths.src, '/public')
@@ -152,14 +165,9 @@ gulp.task('dist', function() {
     .pipe($.jsbeautifier({
       indent_size: 2
     }))
-    .pipe(htmlFilter)
-    .pipe($.useref({noAssets:true})).on('error', conf.errorHandler('useref-html'))
-    .pipe(htmlFilter.restore)
     .pipe(htmlIndexFilter)
     .pipe($.useref()).on('error', conf.errorHandler('useref-index'))
-    .pipe($.debug({
-      title: 'dist'
-    }))
+    .pipe($.debug({title: 'dist'}))
     .pipe(jsFilter)
     .pipe($.jsmin()).on('error', conf.errorHandler('jsmin'))
     .pipe(jsFilter.restore)
@@ -167,6 +175,13 @@ gulp.task('dist', function() {
     .pipe($.cssmin()).on('error', conf.errorHandler('cssmin'))
     .pipe(cssFilter.restore)
     .pipe(htmlIndexFilter.restore)
+    .pipe(htmlFilter)
+    .pipe($.useref({noAssets:true})).on('error', conf.errorHandler('useref-html'))
+    .pipe(htmlFilter.restore)
+    // .pipe(htmlMinFilter)
+    // .pipe($.debug({title: 'dist'}))
+    // .pipe($.htmlmin())
+    // .pipe(htmlMinFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
 });
 
@@ -225,7 +240,7 @@ gulp.task('serve', ['clean', 'copy', 'pug', 'stylus', 'posts'], function() {
   gulp.watch(path.join(conf.paths.src, '/**/*.yaml'), ['pug'])
   gulp.watch(path.join(conf.paths.src, '/**/*.pug'), ['pug', 'posts'])
   gulp.watch(path.join(conf.paths.src, '/**/*.styl'), ['stylus'])
-  gulp.watch(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico}'), ['copy'])
+  gulp.watch(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico,eot,ttf,woff,woff2,otf}'), ['copy'])
 
   gulp.watch(path.join(conf.paths.tmp, '/**/*.html')).on("change", browserSync.reload);
 
@@ -245,7 +260,7 @@ gulp.task('serve:dist', ['build'], function(done) {
 /**
  * Build site (dist folder)
  */
-gulp.task('build', $.sequence('clean', ['copy', 'pug', 'stylus', 'posts'], 'images', 'dist', 'config:copy'));
+gulp.task('build', $.sequence('clean', ['copy', 'pug', 'stylus', 'posts'], 'images', 'dist', 'fonts', 'config:copy'));
 
 
 /**
@@ -258,11 +273,20 @@ gulp.task('publish', function() {
     cacheFileName:'.publish.cache'
   });
 
+  // define custom headers
+  var headers = {
+    'Cache-Control': 'max-age=2592000, no-transform, public'
+    // 'Content-Encoding':'gzip', NO SE PUEDE
+    //'Content-Length':1000 NO SE PUEDE
+  };
+
   // create a new publisher
   return gulp.src(path.join(conf.paths.dist, '/**/*'))
-    .pipe(publisher.publish())
-    //.pipe(publisher.sync())
-    .pipe(publisher.cache())
+    .pipe($.awspublish.gzip())
+    .pipe(publisher.publish(headers))
+    .pipe(publisher.sync())
+    //.pipe(publisher.sync([/^logs/]))
+    //.pipe(publisher.cache())
     .pipe($.awspublish.reporter())
 });
 

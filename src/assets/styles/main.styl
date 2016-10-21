@@ -1,2 +1,50 @@
+
+$color = #f5f5f5;
+
+
+/* STYLES */
+
 body
-  background-color: #f1f1f1
+  font-family: "Raleway", Helvetica, Arial, sans-serif;
+  color: $color;
+  text-align: center;
+  // background: url('/assets/images/bg.jpg') no-repeat center center fixed;
+
+img.bg
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0
+
+
+h1, h2
+  font-weight: bold;
+  margin:10px;
+  padding: 10px;
+  position:relative;
+  z-index: 1
+
+a
+  font-weight: bold;
+  color: $color;
+  margin:10px;
+  padding: 10px;
+  background-color: black;
+  opacity: .75;
+  display:inline-block;
+
+p
+  color: $color;
+  font-weight: bold;
+  opacity: .9;
+  margin:10px;
+  padding: 10px;
+  background-color: silver;
+  text-align: left;

@@ -1,9 +1,8 @@
 extends ../_layout
 
 block content
-  each post in posts
-    - var page = post.slug + '.html'
-    a(href=page)
-      h2 #{post.name}
-
+  h2 #{posts.title}
+  each post in posts.list
+    a(href=post.slug + '.html') #{post.name}
+  br
   a(href="/") Back to index

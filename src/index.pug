@@ -1,8 +1,6 @@
 extends _layout
 
-block content
+block content  
   h1= home.title
-  a(href="/about")
-    h3= menu.about
-  a(href="/posts")
-    h3= menu.posts
+  a(href="/about")= menu.about
+  a(href="/posts")= menu.posts

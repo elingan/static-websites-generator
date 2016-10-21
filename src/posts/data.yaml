@@ -1,4 +1,6 @@
 posts:
+  title: My Posts
+  list:
   -
     name: Post 1
     slug: post-1
