@@ -3,6 +3,13 @@ var path = require('path');
 var fs = require('fs');
 var browserSync = require('browser-sync').create();
 
+const imagemin = require('imagemin');
+const imageminGifsicle = require('imagemin-gifsicle');
+const imageminJpegoptim = require('imagemin-jpegoptim');
+const imageminOptipng = require('imagemin-optipng');
+const imageminSvgo = require('imagemin-svgo');
+
+
 
 /////////////////// CONFIGURATION /////////////////////
 
