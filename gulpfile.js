@@ -9,10 +9,10 @@ const imageminJpegoptim = require('imagemin-jpegoptim');
 const imageminOptipng = require('imagemin-optipng');
 const imageminSvgo = require('imagemin-svgo');
 
+var argv = require('yargs').argv;
 
 
 /////////////////// CONFIGURATION /////////////////////
-
 
 // Load plugins
 var $ = require('gulp-load-plugins')({
@@ -24,6 +24,19 @@ var $ = require('gulp-load-plugins')({
  *  Configuration options
  */
 var conf = {
+
+  /**
+   *  Change values for siteUrl, meta.* and analyticsId
+   */
+  siteUrl:'http://generator.sumaqwebsites.com',
+  meta: {
+    title: 'Sumaq Static Websites Generator',
+    description: 'This is Sumaq static websites generator',
+    keywords: 'sumaq, static, websites, builder, generator, github, aws s3',
+  },
+  analyticsId:'X-99999-X',
+
+  env: (argv.production)?'production':'development',
 
   /**
    *  The main paths of your project handle these with care
@@ -48,8 +61,7 @@ var conf = {
 };
 
 
-/////////////////// TASKS /////////////////////
-
+/////////////////// SINGLE TASKS /////////////////////
 
 /**
  * Delete dist and tmp folder
@@ -67,7 +79,9 @@ gulp.task('clean', function() {
  */
 gulp.task('fonts', function() {
   return gulp.src(path.join(conf.paths.tmp, '/assets/fonts/*.{svg,eot,ttf,woff,woff2,otf}'))
-    .pipe($.debug({title: 'fonts'}))
+    .pipe($.debug({
+      title: 'fonts'
+    }))
     .pipe(gulp.dest(path.join(conf.paths.dist, '/assets/fonts')));
 });
 
@@ -80,7 +94,12 @@ gulp.task('pug', ['yaml'], function() {
       path.join('!' + conf.paths.src, '/**/_*.pug')
     ])
     .pipe($.data(function() {
-      return JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')));
+      var data = JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')))
+      data.siteUrl = conf.siteUrl;
+      data.meta = conf.meta;
+      data.analyticsId = conf.analyticsId
+      data.environment = conf.env;
+      return data;
     })).on('error', conf.errorHandler('pug:jsonParse'))
     .pipe($.pug({
       pretty: true
@@ -103,11 +122,13 @@ gulp.task('stylus', function() {
 });
 
 /**
- * Compile the Stylus files
+ * Compile the YAML files
  */
 gulp.task('yaml', function() {
   return gulp.src(path.join(conf.paths.src, '/**/data.yaml'))
-    .pipe($.debug({title: 'yaml'}))
+    .pipe($.debug({
+      title: 'yaml'
+    }))
     .pipe($.yaml())
     .pipe($.mergeJson('data.json')).on('error', conf.errorHandler('mergeJson'))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
@@ -115,7 +136,7 @@ gulp.task('yaml', function() {
 });
 
 /**
- * Copy css, js and image files to .tmp
+ * Copy css, js, fonts and image files to .tmp
  */
 gulp.task('copy', function() {
   return gulp.src(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico,eot,ttf,woff,woff2,otf}'))
@@ -127,21 +148,21 @@ gulp.task('copy', function() {
 });
 
 /**
- * Imagemin all images
+ * Imagemin for all images
  */
 gulp.task('images', function() {
   return gulp.src(path.join(conf.paths.tmp, '/**/*.{jpg,jpeg,gif,svg,png,ico}'))
-  .pipe($.imagemin([
-    imageminGifsicle(),
-    imageminJpegoptim({
-      progressive: true,
-      max:50
-    }),
-    imageminOptipng(),
-    imageminSvgo()
-  ], {
-    verbose: true,
-  })).on('error', conf.errorHandler('imagemin'))
+    .pipe($.imagemin([
+      imageminGifsicle(),
+      imageminJpegoptim({
+        progressive: true,
+        max: 50
+      }),
+      imageminOptipng(),
+      imageminSvgo()
+    ], {
+      verbose: true,
+    })).on('error', conf.errorHandler('imagemin'))
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
@@ -162,19 +183,19 @@ gulp.task('dist', function() {
   var htmlIndexFilter = $.filter('index.html', {
     restore: true
   });
-  var htmlMinFilter = $.filter('**/*.html', {
-    restore: true
-  });
+  // var htmlMinFilter = $.filter('**/*.html', {
+  //   restore: true
+  // });
 
-
-  var useref = $.useref({
-    //searchPath: path.join(conf.paths.src, '/public')
-  });
+  // var useref = $.useref({
+  //   //searchPath: path.join(conf.paths.src, '/public')
+  // });
 
   gulp.src(path.join(conf.paths.tmp, '/**/*.html'))
     .pipe($.jsbeautifier({
       indent_size: 2
     }))
+    // toma como referencia index.html para procesar css y js
     .pipe(htmlIndexFilter)
     .pipe($.useref()).on('error', conf.errorHandler('useref-index'))
     .pipe($.debug({title: 'dist'}))
@@ -185,32 +206,29 @@ gulp.task('dist', function() {
     .pipe($.cssmin()).on('error', conf.errorHandler('cssmin'))
     .pipe(cssFilter.restore)
     .pipe(htmlIndexFilter.restore)
+    // restaura y procesa todos los html
     .pipe(htmlFilter)
-    .pipe($.useref({noAssets:true})).on('error', conf.errorHandler('useref-html'))
+    .pipe($.useref({noAssets: true})).on('error', conf.errorHandler('useref-html'))
     .pipe(htmlFilter.restore)
-    // .pipe(htmlMinFilter)
-    // .pipe($.debug({title: 'dist'}))
-    // .pipe($.htmlmin())
-    // .pipe(htmlMinFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
 });
 
 
-/**
- * Copy server files
- */
-gulp.task('config:copy', function() {
-
-  // Cambiar esta lista con los archivos requeridos por el servidor
-  var files = ['README.md', 'tile.png'];
-  var src = [];
-  files.forEach(function(file) {
-    src.push(path.join(conf.paths.config, '/files/' + file));
-  });
-  return gulp.src(src)
-    //.pipe($.flatten())
-    .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
-});
+// /**
+//  * Copy server files
+//  */
+// gulp.task('config:copy', function() {
+//
+//   // Cambiar esta lista con los archivos requeridos por el servidor
+//   var files = ['README.md', 'tile.png'];
+//   var src = [];
+//   files.forEach(function(file) {
+//     src.push(path.join(conf.paths.config, '/files/' + file));
+//   });
+//   return gulp.src(src)
+//     //.pipe($.flatten())
+//     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
+// });
 
 
 /**
@@ -220,10 +238,15 @@ gulp.task('posts', ['yaml'], function() {
   return gulp.src('./src/**/*.md')
     .pipe($.frontMatter())
     .pipe($.markdown())
-    // QUITAR frontMatter
     .pipe($.layout(function(file) {
+      var currentFolder = path.dirname(file.relative);
+      var layoutFile = '_' + currentFolder + '.pug';
       var data = JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')));
-      data.layout = path.join(conf.paths.src, '/', path.dirname(file.relative), file.frontMatter.layout);
+      data.layout = path.join(conf.paths.src, '/', currentFolder, layoutFile);
+      data.siteUrl = conf.siteUrl;
+      data.meta = conf.meta;
+      data.analyticsId = conf.analyticsId
+      data.environment = conf.env;
       return data;
     })).on('error', conf.errorHandler('posts:layout'))
     .pipe($.debug({
@@ -233,6 +256,32 @@ gulp.task('posts', ['yaml'], function() {
     .pipe(browserSync.stream());
 });
 
+/**
+ * Generate a sitemap.xml file
+ */
+gulp.task('sitemap', function () {
+    gulp.src(path.join(conf.paths.tmp, '/**/*.html'), {read: false
+        })
+        .pipe($.sitemap({
+            siteUrl: conf.siteUrl
+        })).on('error', conf.errorHandler('sitemap'))
+        .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
+});
+
+
+/**
+ * Generate a robots.txt file
+ */
+gulp.task('robots', function () {
+    gulp.src(path.join(conf.paths.tmp, '/index.html'))
+        .pipe($.robots({
+            useragent: '*',
+            allow: [''],
+            disallow: [''],
+            sitemap: conf.siteUrl + '/sitemap.xml'
+        })).on('error', conf.errorHandler('robots'))
+        .pipe(gulp.dest(path.join(conf.paths.dist)));
+});
 
 /////////////////// MAIN TASKS /////////////////////
 
@@ -243,8 +292,10 @@ gulp.task('posts', ['yaml'], function() {
  */
 gulp.task('serve', ['clean', 'copy', 'pug', 'stylus', 'posts'], function() {
   browserSync.init({
-    server: conf.paths.tmp
-      //proxy: 'localhost:9000'
+    server: {
+      baseDir: conf.paths.tmp
+    }
+    //proxy: 'localhost:9000'
   });
   gulp.watch(path.join(conf.paths.src, '/**/*.md'), ['posts'])
   gulp.watch(path.join(conf.paths.src, '/**/*.yaml'), ['pug'])
@@ -280,14 +331,14 @@ gulp.task('publish', function() {
 
   var credentials = JSON.parse(fs.readFileSync('./credentials.json', 'utf8'));
   var publisher = $.awspublish.create(credentials, {
-    cacheFileName:'.publish.cache'
+    cacheFileName: '.publish.cache'
   });
 
   // define custom headers
   var headers = {
     'Cache-Control': 'max-age=2592000, no-transform, public'
-    // 'Content-Encoding':'gzip', NO SE PUEDE
-    //'Content-Length':1000 NO SE PUEDE
+      // 'Content-Encoding':'gzip', NO SE PUEDE
+      //'Content-Length':1000 NO SE PUEDE
   };
 
   // create a new publisher
@@ -295,7 +346,6 @@ gulp.task('publish', function() {
     .pipe($.awspublish.gzip())
     .pipe(publisher.publish(headers))
     .pipe(publisher.sync())
-    //.pipe(publisher.sync([/^logs/]))
     //.pipe(publisher.cache())
     .pipe($.awspublish.reporter())
 });

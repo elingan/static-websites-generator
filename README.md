@@ -1,6 +1,8 @@
 # SUMAQ Static Websites Generator
 
 This is a simple static websites generator with Gulp, Pug, Stylus, Yaml, BrowserSync, etc. for publish to S3.
+Based on HTML5 Boilerplate
+
 
 ## Important links
 
@@ -14,12 +16,22 @@ This is a simple static websites generator with Gulp, Pug, Stylus, Yaml, Browser
     gulp serve          // Start with browsersync
     gulp serve:dist     // Start in production mode
     gulp build          // build the /dist folder
-    gulp deploy         // deploy dist folder in git server, before required config values (in deploy.env) and build site
+    gulp publish         // deploy dist folder in git server, before required config values (in deploy.env) and build site    
 ```  
 
 ## Tips
 - Cambiar ruta de /fonts si es necesario
 -
+
+Crete file credentials.json
+
+{
+  "params": {
+    "Bucket": "MY_BUCKET"
+  },
+  "region": "eu-central-1",
+}
+
 
 
 
@@ -69,7 +81,7 @@ rm -rf .git && git init
 
 4 Asociarlo a al repositorio
 ```
-git remote add origin git@github.com:username/my-website-repository.git
+git remote add origin git@.../my-website-repository.git
 ```
 
 5 Instalar dependencias
@@ -77,6 +89,7 @@ git remote add origin git@github.com:username/my-website-repository.git
   npm install
 ```
 
+6 Actualizar el config gulpfile.js  
 
 ## TODO
 

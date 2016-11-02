@@ -1,6 +1,5 @@
 ---
 title: Post 3
-layout: _posts.pug
 ---
 
 # Post 3

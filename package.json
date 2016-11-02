@@ -7,9 +7,6 @@
     "url": "https://github.com/elingan/static-websites-generator"
   },
   "devDependencies": {
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-stylus": "^2.5.0",
-    "imagemin-jpegoptim": "^5.0.0",
     "browser-sync": "~2.14.0",
     "del": "~2.2.0",
     "gulp": "^3.9.1",
@@ -32,10 +29,16 @@
     "gulp-merge-json": "^0.6.0",
     "gulp-pug": "^3.0.4",
     "gulp-rename": "^1.2.2",
+    "gulp-robots": "^2.0.4",
     "gulp-sequence": "~0.4.5",
+    "gulp-sitemap": "^4.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.5.0",
     "gulp-useref": "^3.1.2",
     "gulp-util": "^3.0.7",
     "gulp-yaml": "^1.0.1",
-    "jstransformer-markdown-it": "^1.0.0"
+    "imagemin-jpegoptim": "^5.0.0",
+    "jstransformer-markdown-it": "^1.0.0",
+    "yargs": "^6.3.0"
   }
 }

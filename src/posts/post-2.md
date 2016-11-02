@@ -1,6 +1,5 @@
 ---
 title: Post 2
-layout: _posts.pug
 ---
 
 # Post 2
