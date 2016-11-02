@@ -1,6 +1,18 @@
 extends _layout
 
-block content  
+block content
   h1= home.title
   a(href="/about")= menu.about
   a(href="/posts")= menu.posts
+  br
+  h2 Sugerencias seo
+  p= home.seo.title
+  p= home.seo.description
+  p= home.seo.alt
+
+  br
+  br
+
+  a(href="https://www.facebook.com/profile.php?id=100008360887095" title="facebook") facebook
+  a(href="https://twitter.com/elingan" title="twitter") twitter
+  a(href="https://plus.google.com/105196999040254764606" title="google plus") google+

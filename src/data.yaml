@@ -1,5 +1,13 @@
+meta:
+  title: Sumaq Static Websites Generator,
+  description: This is a simple static websites generator with Gulp, Pug, Stylus, Yaml, BrowserSync, etc. for publish to S3.
+  keywords: 'sumaq, static, websites, builder, generator, github, aws s3'
 menu:
   about: About
   posts: Posts
 home:
   title: Home Page
+  seo:
+    title: Es ideal entre 10 y 70 caracteres.
+    description: Es ideal entre 70 y 160 caracteres.
+    alt: Agregar el atrubuto "alt=" a las imágenes para que los buscadores identifiquenb el contenido

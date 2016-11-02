@@ -26,14 +26,9 @@ var $ = require('gulp-load-plugins')({
 var conf = {
 
   /**
-   *  Change values for siteUrl, meta.* and analyticsId
+   *  Change values for siteUrl and analyticsId
    */
   siteUrl:'http://generator.sumaqwebsites.com',
-  meta: {
-    title: 'Sumaq Static Websites Generator',
-    description: 'This is Sumaq static websites generator',
-    keywords: 'sumaq, static, websites, builder, generator, github, aws s3',
-  },
   analyticsId:'X-99999-X',
 
   env: (argv.production)?'production':'development',
@@ -96,7 +91,6 @@ gulp.task('pug', ['yaml'], function() {
     .pipe($.data(function() {
       var data = JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')))
       data.siteUrl = conf.siteUrl;
-      data.meta = conf.meta;
       data.analyticsId = conf.analyticsId
       data.environment = conf.env;
       return data;
@@ -257,7 +251,6 @@ gulp.task('posts', ['yaml'], function() {
       var data = JSON.parse(fs.readFileSync(path.join(conf.paths.tmp, '/data.json')));
       data.layout = path.join(conf.paths.src, '/', currentFolder, layoutFile);
       data.siteUrl = conf.siteUrl;
-      data.meta = conf.meta;
       data.analyticsId = conf.analyticsId
       data.environment = conf.env;
       return data;
