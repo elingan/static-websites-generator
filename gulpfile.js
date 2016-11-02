@@ -139,10 +139,23 @@ gulp.task('yaml', function() {
  * Copy css, js, fonts and image files to .tmp
  */
 gulp.task('copy', function() {
-  return gulp.src(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico,eot,ttf,woff,woff2,otf}'))
+  return gulp.src([
+    path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico,eot,ttf,woff,woff2,otf}'),
+    path.join('!' + conf.paths.src, '/_seo/*')
+  ])
     .pipe($.debug({
       title: 'copy'
     }))
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
+    .pipe(browserSync.stream());
+});
+
+/**
+ * Copy css, js, fonts and image files to .tmp
+ */
+gulp.task('seo', function() {
+  return gulp.src(path.join(conf.paths.src, '/_seo/*'))
+    .pipe($.debug({title: 'seo'}))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
     .pipe(browserSync.stream());
 });
@@ -290,12 +303,11 @@ gulp.task('robots', function () {
  * Serve the Site
  * Watch styles, scripts and images
  */
-gulp.task('serve', ['clean', 'copy', 'pug', 'stylus', 'posts'], function() {
+gulp.task('serve', ['clean', 'copy', 'seo', 'pug', 'stylus', 'posts'], function() {
   browserSync.init({
     server: {
       baseDir: conf.paths.tmp
     }
-    //proxy: 'localhost:9000'
   });
   gulp.watch(path.join(conf.paths.src, '/**/*.md'), ['posts'])
   gulp.watch(path.join(conf.paths.src, '/**/*.yaml'), ['pug'])
@@ -321,7 +333,7 @@ gulp.task('serve:dist', ['build'], function(done) {
 /**
  * Build site (dist folder)
  */
-gulp.task('build', $.sequence('clean', ['copy', 'pug', 'stylus', 'posts'], 'images', 'dist', 'fonts', 'config:copy'));
+gulp.task('build', $.sequence('clean', ['copy', 'seo', 'pug', 'stylus', 'posts'], 'images', 'dist', 'fonts', 'sitemap', 'robots'));
 
 
 /**
@@ -337,8 +349,6 @@ gulp.task('publish', function() {
   // define custom headers
   var headers = {
     'Cache-Control': 'max-age=2592000, no-transform, public'
-      // 'Content-Encoding':'gzip', NO SE PUEDE
-      //'Content-Length':1000 NO SE PUEDE
   };
 
   // create a new publisher
