@@ -39,8 +39,8 @@ AWS S3 requiere un archivo de configuración "./credentials.json" con el siguien
 ```
 
 ### Otras recomendaciones
-- Cambiar ruta de /fonts si es necesario
--
+Cambiar ruta de /fonts si es necesario
+
 
 
 ## Links
@@ -52,10 +52,10 @@ AWS S3 requiere un archivo de configuración "./credentials.json" con el siguien
 ## Gulp tasks: ##
 
 ```  
-    gulp serve          // Start with browsersync
-    gulp serve:dist     // Start in production mode
-    gulp build          // build the /dist folder
-    gulp publish         // deploy dist folder in git server, before required config values (in deploy.env) and build site    
+  gulp serve          // Start with browsersync
+  gulp serve:dist     // Start in production mode
+  gulp build          // build the /dist folder
+  gulp publish        // deploy /dist folder on AWS S3 bucket    
 ```  
 
 
