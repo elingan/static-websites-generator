@@ -12,7 +12,7 @@ Esta basado en las recomendaciones de HTML5 Boilerplate.
   cd MY_WEBSITE_FOLDER
   rm -rf .git && git init
   git remote add origin git@.../my-website-repository.git
-  pm install
+  npm install
 ```
 
 ### Actualizar gulpfile.js  
