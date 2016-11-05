@@ -184,19 +184,14 @@ gulp.task('dist', function() {
   var cssFilter = $.filter('**/*.css', {
     restore: true
   });
-  var htmlFilter = $.filter(['**/*.html', '!index.html'], {
-    restore: true
-  });
+  
   var htmlIndexFilter = $.filter('index.html', {
     restore: true
   });
-  // var htmlMinFilter = $.filter('**/*.html', {
-  //   restore: true
-  // });
 
-  // var useref = $.useref({
-  //   //searchPath: path.join(conf.paths.src, '/public')
-  // });
+  var htmlFilter = $.filter(['**/*.html', '!index.html'], {
+    restore: true
+  });
 
   gulp.src(path.join(conf.paths.tmp, '/**/*.html'))
     .pipe($.jsbeautifier({
@@ -216,26 +211,10 @@ gulp.task('dist', function() {
     // restaura y procesa todos los html
     .pipe(htmlFilter)
     .pipe($.useref({noAssets: true})).on('error', conf.errorHandler('useref-html'))
+    .pipe($.htmlmin()).on('error', conf.errorHandler('htmlmin'))
     .pipe(htmlFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
 });
-
-
-// /**
-//  * Copy server files
-//  */
-// gulp.task('config:copy', function() {
-//
-//   // Cambiar esta lista con los archivos requeridos por el servidor
-//   var files = ['README.md', 'tile.png'];
-//   var src = [];
-//   files.forEach(function(file) {
-//     src.push(path.join(conf.paths.config, '/files/' + file));
-//   });
-//   return gulp.src(src)
-//     //.pipe($.flatten())
-//     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
-// });
 
 
 /**
