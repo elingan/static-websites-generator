@@ -6,25 +6,13 @@ Esta basado en las recomendaciones de HTML5 Boilerplate.
 
 ## Crear un sitio web: ##
 
-### Clonar el proyecto
+### Clonar el proyecto, integrarlo a git e instalar dependencias
 ```  
-git clone https://github.com/elingan/sumaq-static-websites-generator.git MY_WEBSITE_FOLDER
-cd MY_WEBSITE_FOLDER
-```
-
-### Reinicializar la carpeta .git
-```
-rm -rf .git && git init
-```
-
-### Asociarlo a al repositorio
-```
-git remote add origin git@.../my-website-repository.git
-```
-
-### Instalar dependencias
-```
-  npm install
+  git clone https://github.com/elingan/sumaq-static-websites-generator.git MY_WEBSITE_FOLDER
+  cd MY_WEBSITE_FOLDER
+  rm -rf .git && git init
+  git remote add origin git@.../my-website-repository.git
+  pm install
 ```
 
 ### Actualizar gulpfile.js  
