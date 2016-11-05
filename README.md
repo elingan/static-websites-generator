@@ -8,22 +8,22 @@ Esta basado en las recomendaciones de HTML5 Boilerplate.
 
 ### Clonar el proyecto, integrarlo a git e instalar dependencias
 ```  
-  git clone https://github.com/elingan/sumaq-static-websites-generator.git MY_WEBSITE_FOLDER
-  cd MY_WEBSITE_FOLDER
-  rm -rf .git && git init
-  git remote add origin git@.../my-website-repository.git
-  npm install
+git clone https://github.com/elingan/sumaq-static-websites-generator.git MY_WEBSITE_FOLDER
+cd MY_WEBSITE_FOLDER
+rm -rf .git && git init
+git remote add origin git@.../my-website-repository.git
+npm install
 ```
 
 ### Actualizar gulpfile.js  
 Actualizar los datos de configuración para:
 ```
-  config {
-    ...
-    siteUrl:'http://generator.sumaqwebsites.com',
-    analyticsId:'X-99999-X',
-    ...
-  }
+config {
+  ...
+  siteUrl:'http://generator.sumaqwebsites.com',
+  analyticsId:'X-99999-X',
+  ...
+}
 ```
 
 ### Configuración AWS S3
@@ -52,10 +52,10 @@ Cambiar ruta de /fonts si es necesario
 ## Gulp tasks: ##
 
 ```  
-  gulp serve          // Start with browsersync
-  gulp serve:dist     // Start in production mode
-  gulp build          // build the /dist folder
-  gulp publish        // deploy /dist folder on AWS S3 bucket    
+gulp serve          // Start with browsersync
+gulp serve:dist     // Start in production mode
+gulp build          // build the /dist folder
+gulp publish        // deploy /dist folder on AWS S3 bucket    
 ```  
 
 
