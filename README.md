@@ -1,4 +1,4 @@
-# SUMAQ Static Websites Generator
+# Static Websites Generator
 
 Un sencillo generador de sitios web estáticos que usa Gulp, Pug, Stylus, Yaml, BrowserSync y otros componentes y que publica el sitio en un bucket de AWS S3.
 Esta basado en las recomendaciones de HTML5 Boilerplate.
