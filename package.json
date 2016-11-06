@@ -4,7 +4,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elingan/sumaq-static-websites-generator"
+    "url": "https://github.com/elingan/static-websites-generator"
   },
   "devDependencies": {
     "browser-sync": "~2.14.0",
