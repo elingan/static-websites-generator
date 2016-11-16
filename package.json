@@ -30,7 +30,7 @@
     "gulp-pug": "^3.0.4",
     "gulp-rename": "^1.2.2",
     "gulp-robots": "^2.0.4",
-    "gulp-sequence": "~0.4.5",
+    "gulp-sequence": "^0.4.6",
     "gulp-sitemap": "^4.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.5.0",

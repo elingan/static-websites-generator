@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
-var browserSync = require('browser-sync').create();
+// var bs = require('browser-sync').create();
 
 var conf = require('./conf');
 
@@ -39,7 +39,7 @@ gulp.task('copy', function() {
       title: 'copy'
     }))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
-    .pipe(browserSync.stream());
+    // .pipe(bs.stream());
 });
 
 
@@ -125,7 +125,7 @@ gulp.task('seo', function() {
   return gulp.src(path.join(conf.paths.src, '/_seo/*'))
     .pipe($.debug({title: 'seo'}))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
-    .pipe(browserSync.stream());
+    // .pipe(bs.stream());
 });
 
 
@@ -163,4 +163,4 @@ gulp.task('robots', function () {
 /**
  * Build site (dist folder)
  */
-gulp.task('build', $.sequence('clean', ['copy', 'seo', 'pug', 'stylus', 'posts'], 'images', 'dist', 'fonts', 'sitemap', 'robots'));
+gulp.task('build', $.sequence('clean', ['copy', 'seo', 'markups', 'styles', 'posts'], 'images', 'dist', 'fonts', 'sitemap', 'robots'));

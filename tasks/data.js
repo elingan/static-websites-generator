@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
-var browserSync = require('browser-sync').create();
+// var bs = require('browser-sync').create();
 
 var conf = require('./conf');
 
@@ -14,13 +14,13 @@ var $ = require('gulp-load-plugins')({
 /**
  * Compile the YAML files
  */
-gulp.task('yaml', function() {
+gulp.task('data', function() {
   return gulp.src(path.join(conf.paths.src, '/**/data.yaml'))
     .pipe($.debug({
-      title: 'yaml'
+      title: 'data'
     }))
     .pipe($.yaml())
     .pipe($.mergeJson('data.json')).on('error', conf.errorHandler('mergeJson'))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
-    .pipe(browserSync.stream());
+    // .pipe(bs.stream());
 });

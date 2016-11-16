@@ -1,9 +1,8 @@
 .idea
-.tmp
-.comp
+_tmp
+_dist
 bower_components/
 node_modules/
-dist
 *.log
 credentials.json
 .publish.cache

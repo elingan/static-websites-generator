@@ -28,8 +28,8 @@ exports.env = (argv.production) ? 'production' : 'development';
  */
 exports.paths = {
   src: 'src',
-  tmp: '.tmp',
-  dist: 'dist',
+  tmp: '_tmp',
+  dist: '_dist',
   config: 'config'
 };
 

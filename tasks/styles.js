@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
-var browserSync = require('browser-sync').create();
+var bs = require('browser-sync').create();
 
 var conf = require('./conf');
 
@@ -12,12 +12,10 @@ var $ = require('gulp-load-plugins')({
 /**
  * Compile the Stylus files
  */
-gulp.task('stylus', function() {
+gulp.task('styles', function() {
   return gulp.src(path.join(conf.paths.src, '/**/*.styl'))
-    .pipe($.debug({
-      title: 'stylus'
-    }))
     .pipe($.stylus())
+    .pipe($.debug({title: 'styles'}))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
-    .pipe(browserSync.stream());
+    .pipe(bs.stream());
 });

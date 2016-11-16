@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
-var browserSync = require('browser-sync').create();
+var bs = require('browser-sync').create();
 var fs = require('fs');
 
 var conf = require('./conf');
@@ -14,8 +14,8 @@ var $ = require('gulp-load-plugins')({
 /**
  * Compile Posts
  */
-gulp.task('posts', ['yaml'], function() {
-  return gulp.src('./src/**/*.md')
+gulp.task('posts', ['data'], function() {
+  return gulp.src(path.join(conf.paths.src, '/**/*.md'))
     .pipe($.frontMatter())
     .pipe($.markdown())
     .pipe($.layout(function(file) {
@@ -32,5 +32,5 @@ gulp.task('posts', ['yaml'], function() {
       title: 'post'
     }))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
-    .pipe(browserSync.stream());
+    .pipe(bs.stream());
 });

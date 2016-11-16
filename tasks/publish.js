@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
-var browserSync = require('browser-sync').create();
+// var bs = require('browser-sync').create();
 var fs = require('fs');
 
 var conf = require('./conf');

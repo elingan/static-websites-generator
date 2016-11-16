@@ -40,6 +40,7 @@ AWS S3 requiere un archivo de configuración "./credentials.json" con el siguien
 
 ### Otras recomendaciones
 Cambiar ruta de /fonts si es necesario
+El layout para los POSTS debe ser _foldername.pug
 
 
 
