@@ -1,7 +1,5 @@
 var gulp = require('gulp');
 var path = require('path');
-// var bs = require('browser-sync').create();
-
 var conf = require('./conf');
 
 
@@ -22,5 +20,4 @@ gulp.task('data', function() {
     .pipe($.yaml())
     .pipe($.mergeJson('data.json')).on('error', conf.errorHandler('mergeJson'))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/')))
-    // .pipe(bs.stream());
 });

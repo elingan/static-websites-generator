@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var path = require('path');
-// var bs = require('browser-sync').create();
 var fs = require('fs');
 
 var conf = require('./conf');
@@ -31,6 +30,5 @@ gulp.task('publish', function() {
     .pipe($.awspublish.gzip())
     .pipe(publisher.publish(headers))
     .pipe(publisher.sync())
-    //.pipe(publisher.cache())
     .pipe($.awspublish.reporter())
 });

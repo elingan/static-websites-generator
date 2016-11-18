@@ -22,14 +22,8 @@ gulp.task('browserSync', function() {
       baseDir: conf.paths.tmp
     },
     files: [path.join(conf.paths.tmp, '/**/*')],
-    reloadDebounce: 2000
-    //reloadThrottle: 2000
+    reloadDebounce: 3000
   });
-
-  // gulp.watch(path.join(conf.paths.tmp, '/**/index.html')).on("change", bs.reload);
-  // gulp.watch(path.join(conf.paths.tmp, '/**/*.html'), function(event) {
-  //   console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-  // });
 
 });
 
@@ -41,7 +35,7 @@ gulp.task('browserSync', function() {
 gulp.task('watch', function() {
 
   gulp.watch(path.join(conf.paths.src, '/**/*.yaml'), ['markups', 'posts'])
-  gulp.watch(path.join(conf.paths.src, '/**/*.pug'), ['markups'])
+  gulp.watch(path.join(conf.paths.src, '/**/*.pug'), ['markups', 'posts'])
   gulp.watch(path.join(conf.paths.src, '/**/*.md'), ['posts'])
   gulp.watch(path.join(conf.paths.src, '/**/*.styl'), ['styles'])
   gulp.watch(path.join(conf.paths.src, '/**/*.{js,css,jpg,jpeg,gif,svg,png,ico,eot,ttf,woff,woff2,otf}'), ['copy'])
