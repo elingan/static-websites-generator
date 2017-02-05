@@ -2,8 +2,6 @@ var gulp = require('gulp');
 var path = require('path');
 var fs = require('fs');
 
-var conf = require('./conf');
-
 
 // Load plugins
 var $ = require('gulp-load-plugins')({
@@ -15,8 +13,7 @@ var $ = require('gulp-load-plugins')({
  */
 gulp.task('publish', function() {
 
-  var credentials = JSON.parse(fs.readFileSync('./credentials.json', 'utf8'));
-  var publisher = $.awspublish.create(credentials, {
+  var publisher = $.awspublish.create(global.credentials, {
     cacheFileName: '.publish.cache'
   });
 
@@ -25,10 +22,14 @@ gulp.task('publish', function() {
     'Cache-Control': 'max-age=2592000, no-transform, public'
   };
 
+  var options = {
+    // force:'skip'
+  }
+
   // create a new publisher
-  return gulp.src(path.join(conf.paths.dist, '/**/*'))
+  return gulp.src(path.join(global.paths.dist, '/**/*'))
     .pipe($.awspublish.gzip())
-    .pipe(publisher.publish(headers))
+    .pipe(publisher.publish(headers, options))
     .pipe(publisher.sync())
     .pipe($.awspublish.reporter())
 });

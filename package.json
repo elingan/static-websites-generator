@@ -1,5 +1,6 @@
 {
   "name": "static-website-generator",
+  "description": "Static Website Generator",
   "version": "0.0.1",
   "license": "MIT",
   "repository": {
@@ -39,6 +40,7 @@
     "gulp-yaml": "^1.0.1",
     "imagemin-jpegoptim": "^5.0.0",
     "jstransformer-markdown-it": "^1.0.0",
+    "require-dir": "^0.3.1",
     "yargs": "^6.3.0"
   }
 }

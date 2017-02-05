@@ -6,26 +6,72 @@
 
 'use strict';
 
-var fs = require('fs');
+var gulpTasks = require('require-dir')
 var gulp = require('gulp');
 
-/**
- *  This will load all js or coffee files in the gulp directory
- *  in order to load all gulp tasks
- */
-fs.readdirSync('./tasks')
-  .filter(function(file) {
-    return (/\.(js|coffee)$/i).test(file);
-  })
-  .map(function(file) {
-    require('./tasks/' + file);
-  });
+// create Browser Sync instance
+var bs = require('browser-sync').create('MyBS');
+
+// Load plugins
+var $ = require('gulp-load-plugins')({
+  pattern: ['gulp-*', 'del']
+});
 
 
 /**
- *  Default task clean temporaries directories and launch the
- *  main optimization build task
+ *  Console arguments
  */
-gulp.task('default', ['clean'], function() {
+var args = require('yargs').argv;
+
+/**
+ *  Meta values for siteUrl and analyticsId
+ */
+global.siteUrl = 'http://example.com';
+global.analyticsId = 'X-99999-X';
+global.env = (args.production) ? 'production' : 'development';
+
+/**
+ * AWS Credentials
+ */
+ global.credentials = {
+   params: {
+     Bucket: 'cambio.sumaqwebsites.com'
+   },
+   region: 'eu-central-1'
+ }
+
+/**
+ *  The main paths of your project handle these with care
+ */
+global.paths = {
+  src: 'src',
+  tmp: '.tmp',
+  dist: 'dist',
+  config: 'config'
+}
+
+/**
+ *  Common implementation for an error handler of a Gulp plugin
+ */
+global.errorHandler = function(title) {
+  'use strict';
+  return function(err) {
+    $.util.log($.util.colors.red('[' + title + ']'), err.toString());
+    this.emit('end');
+  }
+}
+
+
+
+/**
+ *  load all gulp tasks
+ */
+gulpTasks('./tasks');
+
+
+/**
+ *  Launch default task
+ */
+gulp.task('default', function() {
   gulp.start('serve');
 });
