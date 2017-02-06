@@ -36,9 +36,21 @@ global.credentials = {
 }
 ```
 
+### Publicar en github
+
+- Crear el proyecto github. [Github Pages](https://pages.github.com/)
+- Publicar en github pages usando este [gist](https://gist.github.com/cobyism/4730490).
+
+```
+Para username.github.io puede reemplazar reemplazar:
+git subtree push --prefix $1 REMOTE_GITHUB GITHUB_BRANCH
+
+```
+
+
 ### Otras recomendaciones
 Cambiar ruta de /fonts si es necesario
-El layout para los POSTS debe ser _foldername.pug
+El layout para los POSTS debe ser _foldername.pug_
 
 
 
